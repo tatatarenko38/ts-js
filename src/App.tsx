@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
 
-function App() {
+import "./App.css";
+
+type AppProps = {
+  test?: JSX.Element;
+  children: React.ReactElement;
+  onClick: React.MouseEventHandler;
+};
+
+const App: React.FC<AppProps> = ({ test, children, onClick }) => {
+  const [count, setCount] = useState<number>(0);
+
+  //React.MouseEventHandler<HTMLParagraphElement> - тип данних
+  //функції handleClick(показує при натисканні на назву функції)
+  //писати необов'язково - реакт знає, але якщо треба
+  //зазначити якого роду функція потрібна передаватись(наприклад в пропсах), то ...
+  const handleClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+    setCount((value) => value + 1);
+  };
+
+  //буде визивати алерт при зміні count
+  useEffect(() => {
+    alert(count);
+  }, [count]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p onClick={handleClick}>Count: {count}</p>
+        <p>{test}</p>
+        {children}
       </header>
     </div>
   );
-}
+};
 
 export default App;
